@@ -1,0 +1,120 @@
+<html>
+    <head>
+        <!--Naming the page-->
+    <title>Engine Test</title>
+    <!--Adding a ttf file for cool segment font!-->
+    <style type="text/css">
+            @font-face{
+                font-family: sevenSegment;
+                src: url(SevenSegment.ttf);
+            }
+    
+            h1{
+                font-family: sevenSegment;
+                font-size: 10em;
+                color: black;
+            }
+        
+            .container{
+                position: absolute;
+                top: 75%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            h2 { 
+                position: absolute;
+                font-family: sevenSegment;
+                top: 50%;
+                left:25%;
+            }
+            body {
+                    position:static;
+                    background-color: white;
+                    background-image: url("hotfireBE4engine2.gif");
+                    background-repeat: no-repeat;
+                }
+        </style>
+
+
+    </head>
+    <body>
+        <button> start</button>
+        <audio id="myaudio" autoplay>
+          <source src="663784main_SLS_Audio_D.mp3" type="audio/mp3"/>
+        </audio>
+
+
+ 
+        <!--Setting counter start to ten-->
+    <div class="container">
+    <h1 id="count">3</h1>
+
+    </div>
+    <script type="text/javascript">
+          var context;
+          window.onload = function() {
+           context = new AudioContext();
+            context.onstatechange = function() {
+              //if you have permissions, the audioContext will transition to 'running' immediately
+              if(context.state == 'running') {
+                play();
+              }
+            }
+          };
+      
+          function play() {
+
+//do not initial countdown until start is pressed
+              var counter = 3;
+            //Every loop subtract counter by 1
+            setInterval( function(play){
+                counter--;
+                //auto refresh of count to allow the numbers to change in auto
+                if( counter >= 0 ){
+                    id = document.getElementById("count");
+                    id.innerHTML = counter;
+                }
+                // if the counter is great than 5 hide element
+                if(counter > 5){
+                    document.getElementById("visibility").style.visibility ="hidden";
+            }
+
+            // if the counter is less than or equal to 5 hide element
+            if(counter == 4 ){
+                    document.getElementById("visibility").style.visibility ="visible";
+
+
+            }
+                //counter finished
+                if( counter === 0 ){
+                    id.innerHTML = "Engine test initiated";
+                }
+                // settime interval to refresh every second
+            }, 1000);
+              var promise = document.getElementById('myaudio').play();
+              if (promise !== undefined) {
+                promise.then(_ => {
+                  console.log("playing");
+                }).catch(error => {
+                  // Autoplay was prevented.
+                });
+              }
+          }
+      
+          //play after the user interacts with the page
+          document.querySelector('button').addEventListener('click', function() {
+            context.resume().then(function() {
+              play();
+            });
+          });
+      
+
+        //declaring int to 10 for subtraction
+           
+        </script>
+        <!--displays when count is less than or equal to 5-->
+        <h2 id="visibility"></h2>
+    
+    </body>
+    </html>
+
